@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563EB">
+
+    <title>Главная — Node.js приложение</title>
+    
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1E3A8A">
+
+    <script src="/script.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <h1>Node.js приложение</h1>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="/">Главная</a>
+            <a href="/about">О себе</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Добро пожаловать!</h2>
+            <p>
+                Это главная страница моего приложения,
+                созданного с использованием Node.js и Express.
+            </p>
+        </section>
+
+        <section>
+            <h2>Возможности приложения</h2>
+
+            <div class="skills-grid">
+
+                <div class="skill-tile">
+                    <h3>Node.js</h3>
+                    <p>Запуск серверного JavaScript-приложения.</p>
+                </div>
+
+                <div class="skill-tile">
+                    <h3>Express</h3>
+                    <p>Обработка HTTP-запросов и маршрутизация.</p>
+                </div>
+
+                <div class="skill-tile">
+                    <h3>PWA</h3>
+                    <p>Установка приложения и работа офлайн.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <h2>Проверка API</h2>
+
+            <p>Попробуй получить персональное приветствие.</p>
+
+            <form id="greet-form">
+                <label for="name">Твоё имя</label>
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Например, Виктор"
+                    required
+                >
+
+                <label for="lang">Язык приветствия</label>
+                <select id="lang">
+                    <option value="ru">Русский</option>
+                    <option value="en">Английский</option>
+                </select>
+
+                <button type="submit">Получить приветствие</button>
+            </form>
+
+            <p id="greet-result"></p>
+        </section>
+
+        <section>
+            <h2>Моё портфолио</h2>
+            <p>
+                Здесь можно посмотреть информацию обо мне,
+                мои навыки и проекты.
+            </p>
+
+            <a href="/about">Перейти на страницу «О себе»</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Бутаков Виктор</p>
+    </footer>
+
+    <script>
+        document.getElementById('greet-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const lang = document.getElementById('lang').value;
+            const result = document.getElementById('greet-result');
+
+            try {
+                const response = await fetch(
+                    `/api/greet/${encodeURIComponent(name)}?lang=${lang}`
+                );
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    result.textContent = data.error;
+                    return;
+                }
+
+                result.textContent = data.message;
+
+            } catch (error) {
+                result.textContent = 'Не удалось связаться с сервером';
+            }
+        });
+    </script>
+</body>
+</html>
